@@ -1,0 +1,55 @@
+--- D:/Browsers/Firefox/mods/launchers/Source/FirefoxPortableU.nsi	Mon Jun 10 13:14:01 2024
++++ D:/Browsers/Firefox/mods/launchers/Source/FirefoxPortableU_mod.nsi	Mon Jun 10 13:13:48 2024
+@@ -38,7 +38,7 @@
+ 
+ ;=== Program Details
+ Name "${PORTABLEAPPNAME}"
+-OutFile "..\..\${NAME}.exe"
++OutFile ".\${NAME}.exe"
+ Caption "${PORTABLEAPPNAME} | PortableApps.com"
+ VIProductVersion "${VER}"
+ VIAddVersionKey ProductName "${PORTABLEAPPNAME}"
+@@ -94,7 +94,7 @@
+ !include SetFileAttributesDirectoryNormal.nsh
+ 
+ ;=== Program Icon
+-Icon "..\..\App\AppInfo\appicon.ico"
++Icon ".\AppInfo\appicon.ico"
+ 
+ ;=== Icon & Stye ===
+ BrandingText "PortableApps.com®"
+@@ -327,11 +327,11 @@
+ 	NoINI:
+ 		;=== No INI file, so we'll use the defaults
+ 		StrCpy $ADDITIONALPARAMETERS ""
+-		StrCpy $ALLOWMULTIPLEINSTANCES "false"
++		StrCpy $ALLOWMULTIPLEINSTANCES "true"
+ 		StrCpy $SKIPCOMPREGFIX "false"
+ 		StrCpy $WAITFORPROGRAM "false"
+ 		StrCpy $PROGRAMEXECUTABLE "${DEFAULTEXE}"
+-		StrCpy $DISABLESPLASHSCREEN "false"
++		StrCpy $DISABLESPLASHSCREEN "true"
+ 		StrCpy $DISABLEINTELLIGENTSTART "false"
+ 		StrCpy $bolAlwaysUse32Bit false
+ 
+@@ -489,12 +489,6 @@
+ 	DisplaySplash:
+ 		${CheckForPlatformSplashDisable} $DISABLESPLASHSCREEN
+ 		StrCmp $DISABLESPLASHSCREEN "true" SkipSplashScreen
+-		${IfNot} ${FileExists} "$PROFILEDIRECTORY\favicons.sqlite-wal"
+-			;=== Show the splash screen before processing the files
+-			InitPluginsDir
+-			File /oname=$PLUGINSDIR\splash.jpg "${NAME}.jpg"
+-			newadvsplash::show /NOUNLOAD 2000 0 0 -1 /L $PLUGINSDIR\splash.jpg
+-		${EndIf}
+ 
+ 	SkipSplashScreen:
+ 		${ReadINIStrWithDefault} $strTaskBarHash "$EXEDIR\App\AppInfo\appinfo.ini" "Details" "AppID" "FirefoxPortable"
+@@ -957,5 +951,4 @@
+ 
+ 	TheEnd:
+ 		${registry::Unload}
+-		newadvsplash::stop /WAIT
+-SectionEnd
+\ No newline at end of file
++SectionEnd
